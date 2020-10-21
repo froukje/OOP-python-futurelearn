@@ -1,1 +1,1 @@
-# OOP_Python_futurelearn
+# Object Orientated Programming in Python (a course by *[futurelearn](https://www.futurelearn.com/)*).
