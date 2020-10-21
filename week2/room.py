@@ -3,6 +3,7 @@ class Room():
         self.name = room_name
         self.description = None
         self.linked_rooms = {}
+        self.linked_items = []
 
     def set_description(self, room_description):
         self.description = room_description
@@ -27,6 +28,11 @@ class Room():
         print("The " + self.get_name())
         print("-"*20)
         self.describe()
+        print("-"*20)
+        for item in self.linked_items:
+            print("In the " + self.get_name() + " is a " + item.get_name())
+	
+        print("\n")
         for direction in self.linked_rooms:
             room = self.linked_rooms[direction]
             print("The " + room.get_name() + " is " + direction)
@@ -36,7 +42,12 @@ class Room():
             return self.linked_rooms[direction.upper().lower()]
         elif direction.upper().lower() in ["north", "south", "east", "west"]:
             print("You can't go in this direction")
-            return self 
+            return self
+        elif direction in ["quit", "exit"]:
+            print("Awww ... already leaving?...") 
         else:
             print("invalid input")
             return self
+
+    def link_item(self, item_to_link):
+        self.linked_items.append(item_to_link)

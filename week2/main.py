@@ -1,4 +1,5 @@
 from room import Room
+from item import Item
 
 kitchen = Room("Kitchen")
 ballroom = Room("Ballroom")
@@ -17,8 +18,28 @@ dining_hall.link_room(ballroom, "west")
 
 current_room = kitchen
 
+# items
+old_sward = Item("old Sward")
+shield = Item("Shield")
+wand = Item("wand")
+book = Item("Book")
+
+# link items
+dining_hall.link_item(old_sward)
+kitchen.link_item(shield)
+
+# set description of items
+old_sward.set_description("A stump, rusty sward - let's hope you won't need it.")
+shield.set_description("A heavy shield good to defend, but heavy to carry.")
+wand.set_description("Wow - now you can do some magic!")
+book.set_description("A heavy book full of wisdom.")
+
+old_sward.describe()
+
 while True:
     print("\n")
-    current_room.get_details()
+    current_room.get_details()  
     command = input("> ")
     current_room = current_room.move(command)
+    if command in ["exit", "quit"]:
+        break
