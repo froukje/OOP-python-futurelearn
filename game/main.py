@@ -1,5 +1,6 @@
 from room import Room
 from item import Item
+from character import Enemy
 
 kitchen = Room("Kitchen")
 ballroom = Room("Ballroom")
@@ -15,6 +16,14 @@ kitchen.link_room(dining_hall, "south")
 ballroom.link_room(dining_hall, "east")
 dining_hall.link_room(kitchen, "north")
 dining_hall.link_room(ballroom, "west")
+
+dave = Enemy("Dave", "A smelly zombie!")
+dave.set_conversation("Ahhh...I will eat you!")
+dave.set_weakness("cheese")
+
+
+# put dave into the dining hall
+dining_hall.set_character(dave)
 
 current_room = kitchen
 
@@ -38,7 +47,12 @@ old_sward.describe()
 
 while True:
     print("\n")
-    current_room.get_details()  
+    current_room.get_details() 
+
+    inhabitant = current_room.get_character()
+    if inhabitant is not None:
+        inhabitant.describe()
+ 
     command = input("> ")
     current_room = current_room.move(command)
     if command in ["exit", "quit"]:
