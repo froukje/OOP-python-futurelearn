@@ -50,11 +50,6 @@ class Room():
         elif direction.upper().lower() in ["north", "south", "east", "west"]:
             print("You can't go in this direction")
             return self
-        elif direction in ["quit", "exit"]:
-            print("Awww ... already leaving?...") 
-        else:
-            print("invalid input")
-            return self
 
     def link_item(self, item_to_link):
         self.linked_items.append(item_to_link)
