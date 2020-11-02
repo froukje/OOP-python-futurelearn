@@ -56,7 +56,7 @@ book.set_description("A heavy book full of wisdom.")
 
 old_sward.describe()
 
-loop = True
+loop = True # if True room and inhabitant details are printed
 while True:
     print("\n")
     if loop:
@@ -69,34 +69,46 @@ while True:
     print("What do you want to do? ['talk', 'fight', set enemy to sleep, hug a friend, change the room]\n") 
    
     command = input("> ")
+    # change room
     if command.upper().lower() in current_room.linked_rooms:
         loop = True
         current_room = current_room.move(command)
     elif command.upper().lower() in ['north', 'south', 'east', 'west']:
         loop = False
         current_room = current_room.move(command)
-    elif command.upper().lower() =="talk":
+    # talk
+    elif command.upper().lower() == "talk":
         loop = False
         if inhabitant:
             print("Talk to " + inhabitant.name + "!")
             inhabitant.talk()
         else:
             print("Sorry, there is nobody else in the room.")	
-    elif command.upper().lower() =="fight" and isinstance(inhabitant, Enemy):
+    # fight
+    elif command.upper().lower() =="fight":# and isinstance(inhabitant, Enemy):
         loop = False
-        if inhabitant:
+        if inhabitant and isinstance(inhabitant, Enemy):
             print("Fight against " + inhabitant.name + "!")
             print("What would you like to fight with?")
             combat = input("[combat item] > ")
-            if inhabitant.fight(combat) == False:
+            if inhabitant.fight(combat) == True:
+                print("Yeah! You won!")
+                current_room.set_character(None)
+                loop = True
+            # if weapon is not weakness of inhabitant -> loose game and exit  
+            elif inhabitant.fight(combat) == False:
+                print("Oh, no! You lost!")
                 break
         else:
             print("Sorry, there is nobody else in the room.")
+    # sleep
     elif command.upper().lower() == 'sleep' and isinstance(inhabitant, Enemy):
         loop = False
         inhabitant.sleep()
+    # hug
     elif command.upper().lower() == "hug" and isinstance(inhabitant, Friend):
         inhabitant.hug()
+    # exit game
     elif command in ["exit", "quit"]:
         print("Awww...already leaving?") 
         break
