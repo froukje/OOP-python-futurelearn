@@ -3,4 +3,6 @@
 
 Creating an adventure game!
 
-work in progress ...
+A house with different rooms you can visit and inhabitants you can communicate with.
+
+... work in progress ...
