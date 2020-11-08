@@ -3,10 +3,19 @@ from item import Item
 from character import Enemy
 from character import Character
 from character import Friend
+from rpginfo import RPGInfo
+
+spooky_castle = RPGInfo("The Spooky Castle")
+spooky_castle.welcome()
+RPGInfo.info()
+
+backpack = []
 
 kitchen = Room("Kitchen")
 ballroom = Room("Ballroom")
 dining_hall = Room("Dining Hall")
+
+print("There are " + str(Room.number_of_rooms) + " Rooms to explore.")
 
 # set descriptions of the rooms
 kitchen.set_description("A dank and dirty room buzzing with flies.")
@@ -39,20 +48,25 @@ kitchen.set_character(ricky)
 current_room = kitchen
 
 # items
+cheese = Item("cheese")
 old_sward = Item("old Sward")
 shield = Item("Shield")
 wand = Item("wand")
-book = Item("Book")
+book = Item("Book") 
+
+# put items in room
+dining_hall.set_item(old_sward)
+kitchen.set_item(shield)
 
 # link items
 dining_hall.link_item(old_sward)
 kitchen.link_item(shield)
 
-# set description of items
-old_sward.set_description("A stump, rusty sward - let's hope you won't need it.")
-shield.set_description("A heavy shield good to defend, but heavy to carry.")
-wand.set_description("Wow - now you can do some magic!")
-book.set_description("A heavy book full of wisdom.")
+# set description of itemsi
+old_sward.description = "A stump, rusty sward - let's hope you won't need it."
+shield.description = "A heavy shield good to defend, but heavy to carry."
+wand.description = "Wow - now you can do some magic!"
+book.description = "A heavy book full of wisdom."
 
 old_sward.describe()
 
@@ -65,8 +79,12 @@ while True:
         inhabitant = current_room.get_character()
         if inhabitant is not None:
             inhabitant.describe()
+    
+        item = current_room.get_item()
+        if item is not None:
+            item.describe()
 
-    print("What do you want to do? ['talk', 'fight', set enemy to sleep, hug a friend, change the room]\n") 
+    print("What do you want to do? ['talk', 'fight', set enemy to sleep, hug a friend, change the room, 'take' item]\n") 
    
     command = input("> ")
     # change room
@@ -96,9 +114,11 @@ while True:
                 current_room.set_character(None)
                 loop = True
             # if weapon is not weakness of inhabitant -> loose game and exit  
-            elif inhabitant.fight(combat) == False:
+            else: 
                 print("Oh, no! You lost!")
                 break
+        elif inhabitant and not isinstance(inhabitant, Enemy):
+            print(inhabitant.name + " doesn't want to fight with you.")
         else:
             print("Sorry, there is nobody else in the room.")
     # sleep
@@ -108,10 +128,23 @@ while True:
     # hug
     elif command.upper().lower() == "hug" and isinstance(inhabitant, Friend):
         inhabitant.hug()
+    # take 
+    elif command.upper().lower() == "take" and item:
+        backpack.append(item.name)
+        current_room.set_item(None)
+        print("Your backpack contains: {} ".format([i for i in backpack]))
+        loop = False
+    elif command.upper().lower() == "take":
+        print("There is no item in this room") 
+        loop = False
     # exit game
     elif command in ["exit", "quit"]:
         print("Awww...already leaving?") 
         break
     else:
         print("Invalid input.")
-        loop = False	
+        loop = False
+
+RPGInfo.author = "Frauke"
+RPGInfo.credits()
+	

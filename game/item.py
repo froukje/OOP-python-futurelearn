@@ -3,11 +3,16 @@ class Item():
         self.name = item_name
         self.description = None
 
-    def set_description(self, item_description):
-        self.description = item_description
+    # getter
+    @property
+    def description(self):
+        return self._description 
 
-    def get_description(self):
-        return self.description
+    # setter
+    # _ means that the attribute is protected
+    @description.setter
+    def description(self, value):
+        self._description = value
 
     def describe(self):
         print(self.description)

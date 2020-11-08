@@ -1,10 +1,15 @@
 class Room():
+
+    number_of_rooms = 0
+
     def __init__(self, room_name):
         self.name = room_name
         self.description = None
         self.linked_rooms = {}
         self.linked_items = []
         self.character = None
+        Room.number_of_rooms += 1
+        self.item = None
 
     def set_description(self, room_description):
         self.description = room_description
@@ -25,7 +30,13 @@ class Room():
         self.character = new_character
 
     def get_character(self):
-        return self.character 
+        return self.character
+
+    def set_item(self, new_item):
+        self.item = new_item
+
+    def get_item(self):
+        return self.item 
 
     def link_room(self, room_to_link, direction):
         self.linked_rooms[direction] = room_to_link
@@ -36,8 +47,9 @@ class Room():
         print("-"*20)
         self.describe()
         print("-"*20)
-        for item in self.linked_items:
-            print("In the " + self.get_name() + " is a " + item.get_name())
+        if self.get_item():
+            for item in self.linked_items:
+                print("In the " + self.get_name() + " is a " + item.get_name())
 	
         print("\n")
         for direction in self.linked_rooms:
