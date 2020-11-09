@@ -57,16 +57,19 @@ book = Item("Book")
 # put items in room
 dining_hall.set_item(old_sward)
 kitchen.set_item(shield)
+ballroom.set_item(cheese)
 
 # link items
 dining_hall.link_item(old_sward)
 kitchen.link_item(shield)
+ballroom.link_item(cheese)
 
 # set description of itemsi
 old_sward.description = "A stump, rusty sward - let's hope you won't need it."
 shield.description = "A heavy shield good to defend, but heavy to carry."
 wand.description = "Wow - now you can do some magic!"
 book.description = "A heavy book full of wisdom."
+cheese.description = "A smelly old cheese."
 
 old_sward.describe()
 
@@ -108,15 +111,24 @@ while True:
         if inhabitant and isinstance(inhabitant, Enemy):
             print("Fight against " + inhabitant.name + "!")
             print("What would you like to fight with?")
-            combat = input("[combat item] > ")
-            if inhabitant.fight(combat) == True:
-                print("Yeah! You won!")
-                current_room.set_character(None)
-                loop = True
-            # if weapon is not weakness of inhabitant -> loose game and exit  
-            else: 
-                print("Oh, no! You lost!")
-                break
+            combat = input("[combat item] > ") 
+            if combat in backpack:
+                if inhabitant.fight(combat) == True:
+                    print("Yeah! You won!")
+                    current_room.set_character(None)
+                    loop = True
+                    print(Enemy.nr_enemies)
+                    if Enemy.nr_enemies == 0:
+                        print("Congratulations! You defeated all Enemies!")
+                        loop = False 
+                        break   
+                # if weapon is not weakness of inhabitant -> loose game and exit  
+                else:
+                    print("Oh no! You lost!")
+                    break
+            # check if chosen wepon is in backpack 
+            elif combat not in backpack:
+                print("You cannot fight with a " + combat + ". You don't have one")
         elif inhabitant and not isinstance(inhabitant, Enemy):
             print(inhabitant.name + " doesn't want to fight with you.")
         else:
